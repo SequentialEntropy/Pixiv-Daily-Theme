@@ -1,6 +1,11 @@
 import requests
 from datetime import datetime, timedelta
 import pytz
+from tag import fetch_tag
+
+red = "\033[91m"
+green = "\033[94m"
+reset = "\033[0m"
 
 jp = pytz.timezone("Japan")
 
@@ -41,7 +46,19 @@ def fetch_theme(date):
         error_message(f'The API returned the error message "{ data.get("message", "(No message given)") }".', f'API からエラー「{ data.get("message", "（エラーメッセージ無し）") }」が返されました。')
         return
 
-    print(f'お題：{data["body"]["idea_anniversary_tag"]}')
+    tag_name = data["body"]["idea_anniversary_tag"]
+
+    tag_data = fetch_tag(data["body"]["idea_anniversary_tag"])
+
+    if tag_data:
+        print(f'ID: { tag_data["body"]["pixpedia"]["id"] }')
+        print(f'Theme: {green}{ tag_data["body"]["tagTranslation"][tag_name]["en"] }{reset}')
+
+    print(f'お題：{red}{ tag_name }{reset}')
+
+    if tag_data:
+        print(f'読み仮名：{ tag_data["body"]["pixpedia"].get("yomigana", "") }')
+
     print(data['body']['idea_anniversary_description'])
 
 def menu():
