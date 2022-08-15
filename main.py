@@ -55,7 +55,9 @@ def menu():
     print('    〇日前までのお題を検索')
     print('[4] Query theme on a specific date')
     print('    〇月〇日のお題を検索')
-    print('[5] Quit')
+    print('[5] Query all themes between two dates')
+    print('    〇月〇日から〇月〇日までのお題を検索')
+    print('[6] Quit')
     print('    閉じる')
 
 def main():
@@ -115,6 +117,61 @@ def main():
             return
 
         fetch_theme(date)
+
+    elif option in ['5', '５']:
+        print('Enter the year for the starting date:')
+        print('最初の日にちの年を入力してください：')
+        year1 = int_input()
+        if not year1:
+            return
+
+        print('Enter the month for the starting date:')
+        print('最初の日にちの月を入力してください：')
+        month1 = int_input()
+        if not month1:
+            return
+        
+        print('Enter the day for the starting date:')
+        print('最初の日にちの日にちを入力してください：')
+        day1 = int_input()
+        if not day1:
+            return
+        
+        try:
+            date1 = datetime(year1, month1, day1)
+        except ValueError:
+            error_message('An invalid date was entered', '無効な日付が入力されました')
+            return
+
+        print('Enter the year for the ending date:')
+        print('最後の日にちの年を入力してください：')
+        year2 = int_input()
+        if not year2:
+            return
+
+        print('Enter the month for the ending date:')
+        print('最後の日にちの月を入力してください：')
+        month2 = int_input()
+        if not month2:
+            return
+        
+        print('Enter the day for the ending date:')
+        print('最後の日にちの日にちを入力してください：')
+        day2 = int_input()
+        if not day2:
+            return
+
+        try:
+            date2 = datetime(year2, month2, day2)
+        except ValueError:
+            error_message('An invalid date was entered', '無効な日付が入力されました')
+            return
+
+        if (date2 - date1).days < 0:
+            error_message('An invalid range was entered. The starting date must be earlier than the ending date.', '無効な期間が入力されました。最初と最後の日にちの順番を確認してください。')
+
+        for i in range((date2 - date1).days + 1):
+            fetch_theme(date1 + timedelta(days=i))
 
 if __name__ == "__main__":
     main()
