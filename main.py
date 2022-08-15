@@ -52,7 +52,7 @@ def fetch_theme(date):
     tag_data = fetch_tag(data["body"]["idea_anniversary_tag"])
 
     if tag_data:
-        print(f'ID: { tag_data["body"]["pixpedia"]["id"] }')
+        print(f'ID: { tag_data["body"]["pixpedia"].get("id", f"{yellow}ID not found{reset}") }')
         print(f'Theme: {green}{ tag_data["body"]["tagTranslation"][tag_name].get("en", f"{yellow}No translation found") }{reset}')
 
     print(f'お題：{red}{ tag_name }{reset}')
