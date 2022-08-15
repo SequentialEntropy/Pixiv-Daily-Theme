@@ -4,8 +4,9 @@ import pytz
 from tag import fetch_tag
 
 red = "\033[91m"
-green = "\033[94m"
+green = "\033[92m"
 reset = "\033[0m"
+yellow = "\033[93m"
 
 jp = pytz.timezone("Japan")
 
@@ -52,12 +53,12 @@ def fetch_theme(date):
 
     if tag_data:
         print(f'ID: { tag_data["body"]["pixpedia"]["id"] }')
-        print(f'Theme: {green}{ tag_data["body"]["tagTranslation"][tag_name]["en"] }{reset}')
+        print(f'Theme: {green}{ tag_data["body"]["tagTranslation"][tag_name].get("en", f"{yellow}No translation found") }{reset}')
 
     print(f'お題：{red}{ tag_name }{reset}')
 
     if tag_data:
-        print(f'読み仮名：{ tag_data["body"]["pixpedia"].get("yomigana", "") }')
+        print(f'読み仮名：{ tag_data["body"]["pixpedia"].get("yomigana", f"{yellow}見つかりませんでした{reset}") }')
 
     print(data['body']['idea_anniversary_description'])
 
